@@ -68,7 +68,6 @@ TEXT_list2 = TEXT.split(' ')
 TEXT_list = []
 for i in TEXT_list2:
     TEXT_list.append(i.strip(',.!?\n\t\f'))
-print(TEXT_list)
 pocet_slov = len(TEXT_list)
 velka_pismena = 0
 mala_pismena = 0
