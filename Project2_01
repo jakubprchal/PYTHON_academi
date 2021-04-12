@@ -1,0 +1,101 @@
+from random import random, randint
+
+def pozdrav():
+  print('Hi there!')
+
+def kontrola_cisla(volene=int, string_volene=list):
+  while '0' in string_volene or string_volene[0] in string_volene[1:] or string_volene[1] in string_volene[2:] or string_volene[2] in string_volene[3]:
+    volene = randint(1000, 10000)
+    string_volene = list(str(volene)) 
+  return volene, string_volene
+
+def kontrola_cisla_uzivatel(volene=int, string_volene=list):
+  if '0' in string_volene or string_volene[0] in string_volene[1:] or string_volene[1] in string_volene[2:] or string_volene[2] in string_volene[3]:
+    print("The number is out of limits. Give it next try!")
+    return 0
+  else:
+    return 1
+
+def tvorbacisla():
+  print(f"I've generated a random 4 digit number for you.\nLet's play a bulls and cows game.")
+  volene = randint(1000, 10000)
+  string_volene = list(str(volene))
+  volene, string_volene = kontrola_cisla(volene, string_volene)
+  return volene, string_volene
+
+def vstup_hadani()-> str:
+  i = 0
+  while i == 0 :
+    uzivatel =input("Add here your number, it has to be from 1000 to 10000 and all digits have to by unique(q for exit): ")
+    if uzivatel == 'q':
+      return uzivatel
+    elif uzivatel.isdigit():
+      uzivatel = int(uzivatel)
+      string_uzivatel = list(str(uzivatel))
+      if uzivatel >= 1000 and uzivatel <=10000:
+        i = kontrola_cisla_uzivatel(uzivatel, string_uzivatel)
+      else:
+        print("The number is out of limits. Give it next try!")
+    else:
+      print("Input is not digit. Give it next try!")  
+  return uzivatel, string_uzivatel
+
+def hledani_shody(string_volene=list, vzor=list):
+  k = 0
+  i = 0
+  j = 0
+  l = 0
+  for cislo in string_volene:
+    for cislo_2 in vzor:
+      if cislo == cislo_2:
+        k += 1
+        if i == j:
+          l += 1
+          k -= 1
+      j += 1
+    j = 0
+    i += 1
+  return k, l
+
+def main():
+  vyhra = 0
+  pozdrav()
+  print("-" * 60)
+  vzor = tvorbacisla()
+#  print(vzor)
+  print("-" * 60)
+  smycka = True
+  pocitadlo = 0
+  while smycka:
+    hledane = vstup_hadani()
+    if hledane == 'q':
+      smycka = False
+    else:
+      stav = hledani_shody(hledane[1], vzor[1])
+      BULL = 'bull'
+      if stav[0] > 1:
+        BULL = 'bulls'
+      COW ='cow '
+      if stav[1] > 1:
+        COW = 'cows'
+      print(f"{stav[1]} {BULL}, {stav[0]} {COW}"  )
+      pocitadlo += 1
+      print(f"You test the number: {pocitadlo} times ")
+      print("-" * 60)
+      if stav[1] == 4:
+        vyhra = 1
+        smycka = False
+  if pocitadlo < 4:
+    text = "That's amazing score"
+  elif pocitadlo < 8:
+    text = "That's average score"
+  elif pocitadlo < 12:
+    text = "That's not so good score"
+  else:
+    text = "That's not so poor score"    
+  if vyhra == 1:
+    print(f"Correct, you've guessed the right number \n {text}")
+  else:
+    print(f"You lose the game. The correct number is {vzor[0]}") 
+if __name__ == '__main__': 
+  main()
